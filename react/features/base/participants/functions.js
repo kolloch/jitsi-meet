@@ -126,7 +126,8 @@ export function getParticipantById(
  * @returns {number}
  */
 export function getParticipantCount(stateful: Object | Function) {
-    return getParticipants(stateful).length;
+    // FIXME: This is probably not always right
+    return getParticipantsWithVisibleVideo(stateful).length;
 }
 
 /**
@@ -210,6 +211,14 @@ export function getParticipantPresenceStatus(
  */
 export function getParticipants(stateful: Object | Function) {
     return _getAllParticipants(stateful).filter(p => !p.isFakeParticipant);
+}
+
+export function getParticipantsWithVisibleVideo(stateful: Object | Function) {
+    return getParticipants(stateful).filter(p => !p.videoMuted);
+}
+
+export function getParticipantsCountWithVisibleVideo(stateful: Object | Function) {
+    return getParticipantsWithVisibleVideo(stateful).length;
 }
 
 /**

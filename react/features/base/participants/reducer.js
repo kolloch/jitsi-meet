@@ -1,7 +1,16 @@
 // @flow
 
 import { ReducerRegistry, set } from '../redux';
-
+import {
+    CAMERA_FACING_MODE,
+    MEDIA_TYPE,
+    SET_AUDIO_MUTED,
+    SET_CAMERA_FACING_MODE,
+    SET_VIDEO_MUTED,
+    VIDEO_MUTISM_AUTHORITY,
+    TOGGLE_CAMERA_FACING_MODE,
+    toggleCameraFacingMode
+} from '../media';
 import {
     DOMINANT_SPEAKER_CHANGED,
     PARTICIPANT_ID_CHANGED,
@@ -11,6 +20,14 @@ import {
     PIN_PARTICIPANT,
     SET_LOADABLE_AVATAR_URL
 } from './actionTypes';
+
+import {
+    TOGGLE_SCREENSHARING,
+    TRACK_NO_DATA_FROM_SOURCE,
+    TRACK_REMOVED,
+    TRACK_UPDATED
+} from '../tracks/actionTypes';
+
 import { LOCAL_PARTICIPANT_DEFAULT_ID, PARTICIPANT_ROLE } from './constants';
 
 /**
@@ -21,6 +38,7 @@ import { LOCAL_PARTICIPANT_DEFAULT_ID, PARTICIPANT_ROLE } from './constants';
  * @property {string} avatar - Path to participant avatar if any.
  * @property {string} role - Participant role.
  * @property {boolean} local - If true, participant is local.
+ * @property {boolean} videoMuted - If true, the video is muted.
  * @property {boolean} pinned - If true, participant is currently a
  * "PINNED_ENDPOINT".
  * @property {boolean} dominantSpeaker - If this participant is the dominant
@@ -69,6 +87,7 @@ ReducerRegistry.register('features/base/participants', (state = [], action) => {
     case PARTICIPANT_ID_CHANGED:
     case PARTICIPANT_UPDATED:
     case PIN_PARTICIPANT:
+    case TRACK_UPDATED:
         return state.map(p => _participant(p, action));
 
     case PARTICIPANT_JOINED:
@@ -162,6 +181,23 @@ function _participant(state: Object = {}, action) {
     case PIN_PARTICIPANT:
         // Currently, only one pinned participant is allowed.
         return set(state, 'pinned', state.id === action.participant.id);
+    case TRACK_UPDATED:
+        // TODO Remove the following calls to APP.UI once components interested
+        // in track mute changes are moved into React and/or redux.
+        if (typeof APP !== 'undefined') {
+            const { jitsiTrack } = action.track;
+            const muted = jitsiTrack.isMuted();
+            const participantID = jitsiTrack.getParticipantId();
+            const isVideoTrack = jitsiTrack.type !== MEDIA_TYPE.AUDIO;
+
+            if (isVideoTrack && state.id == participantID) {
+                return set(state, 'videoMuted', muted);
+            }
+
+        }
+
+        return state;
+
     }
 
     return state;

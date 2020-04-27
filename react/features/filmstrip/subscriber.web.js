@@ -4,6 +4,7 @@ import { StateListenerRegistry, equals } from '../base/redux';
 import Filmstrip from '../../../modules/UI/videolayout/Filmstrip';
 import VideoLayout from '../../../modules/UI/videolayout/VideoLayout';
 import { getCurrentLayout, getTileViewGridDimensions, shouldDisplayTileView, LAYOUTS } from '../video-layout';
+import { getParticipantsCountWithVisibleVideo } from '../base/participants/functions.js';
 
 import { setHorizontalViewDimensions, setTileViewDimensions } from './actions';
 
@@ -11,7 +12,7 @@ import { setHorizontalViewDimensions, setTileViewDimensions } from './actions';
  * Listens for changes in the number of participants to calculate the dimensions of the tile view grid and the tiles.
  */
 StateListenerRegistry.register(
-    /* selector */ state => state['features/base/participants'].length,
+    /* selector */ state => getParticipantsCountWithVisibleVideo(state),
     /* listener */ (numberOfParticipants, store) => {
         const state = store.getState();
 

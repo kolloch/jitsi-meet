@@ -1,7 +1,7 @@
 // @flow
 
 import { LAYOUTS } from './constants';
-import { getPinnedParticipant } from '../base/participants';
+import { getPinnedParticipant, getParticipantsWithVisibleVideo } from '../base/participants';
 
 declare var interfaceConfig: Object;
 
@@ -49,7 +49,8 @@ export function getTileViewGridDimensions(state: Object, maxColumns: number = ge
     // When in tile view mode, we must discount ourselves (the local participant) because our
     // tile is not visible.
     const { iAmRecorder } = state['features/base/config'];
-    const numberOfParticipants = state['features/base/participants'].length - (iAmRecorder ? 1 : 0);
+    const participants = getParticipantsWithVisibleVideo(state);
+    const numberOfParticipants = participants.length - (iAmRecorder ? 1 : 0);
 
     const columnsToMaintainASquare = Math.ceil(Math.sqrt(numberOfParticipants));
     const columns = Math.min(columnsToMaintainASquare, maxColumns);

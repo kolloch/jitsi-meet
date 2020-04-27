@@ -118,6 +118,8 @@ export default class RemoteVideo extends SmallVideo {
         this._stopRemoteControl = this._stopRemoteControl.bind(this);
 
         this.container.onclick = this._onContainerClick;
+
+        this.container.setAttribute('data-participant-id', user.getId());
     }
 
     /**

@@ -271,6 +271,32 @@ const VideoLayout = {
             thumbnail.focus(pinnedParticipantID === thumbnail.getId()));
     },
 
+    _reorderThumbnails() {
+        // Achieve a stable order of the participants.
+        const filmstrip = $('#filmstripRemoteVideos');
+        const containers = filmstrip.find('.videocontainer').toArray();
+        function getParticipantId(p) {
+            const attr = p.getAttribute('data-participant-id');
+            return attr != null? attr : APP.conference.getMyUserId();
+        }
+        containers.sort((a,b) => {
+            const aId = getParticipantId(a);
+            const bId = getParticipantId(b);
+            return aId < bId ? -1 : aId == bId ? 0 : 1;
+        });
+
+        console.log('XXXXXXXXXXXx  reorderThumbnails', $('#filmstripRemoteVideos'));
+        for (let i=0; i<containers.length; ++i) {
+            const container = $(containers[i]);
+            // if (container.parent().id() == 'localVideoTileViewContainer') {
+            //     container = container.parent();
+            // }
+            container.css('order', i);
+            console.log('XXXXX order', i, container);
+        }
+    },
+
+
     /**
      * Creates a participant container for the given id.
      *
@@ -301,6 +327,8 @@ const VideoLayout = {
 
         this.updateMutedForNoTracks(id, 'audio');
         this.updateMutedForNoTracks(id, 'video');
+
+        this._reorderThumbnails();
     },
 
     /**

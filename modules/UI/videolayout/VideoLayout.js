@@ -288,9 +288,9 @@ const VideoLayout = {
         console.log('XXXXXXXXXXXx  reorderThumbnails', $('#filmstripRemoteVideos'));
         for (let i=0; i<containers.length; ++i) {
             const container = $(containers[i]);
-            // if (container.parent().id() == 'localVideoTileViewContainer') {
-            //     container = container.parent();
-            // }
+            if (container.parent().attr('id') == 'localVideoTileViewContainer') {
+                container.parent().css('order', i);
+            }
             container.css('order', i);
             console.log('XXXXX order', i, container);
         }

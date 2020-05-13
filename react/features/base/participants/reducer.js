@@ -25,6 +25,7 @@ import {
     TOGGLE_SCREENSHARING,
     TRACK_NO_DATA_FROM_SOURCE,
     TRACK_REMOVED,
+    TRACK_ADDED,
     TRACK_UPDATED
 } from '../tracks/actionTypes';
 
@@ -88,6 +89,8 @@ ReducerRegistry.register('features/base/participants', (state = [], action) => {
     case PARTICIPANT_UPDATED:
     case PIN_PARTICIPANT:
     case TRACK_UPDATED:
+    case TRACK_ADDED:
+    case TRACK_REMOVED:
         return state.map(p => _participant(p, action));
 
     case PARTICIPANT_JOINED:
@@ -181,7 +184,10 @@ function _participant(state: Object = {}, action) {
     case PIN_PARTICIPANT:
         // Currently, only one pinned participant is allowed.
         return set(state, 'pinned', state.id === action.participant.id);
+
     case TRACK_UPDATED:
+    case TRACK_ADDED:
+    case TRACK_REMOVED:
         // TODO Remove the following calls to APP.UI once components interested
         // in track mute changes are moved into React and/or redux.
         if (typeof APP !== 'undefined') {
@@ -191,6 +197,7 @@ function _participant(state: Object = {}, action) {
             const isVideoTrack = jitsiTrack.type !== MEDIA_TYPE.AUDIO;
 
             if (isVideoTrack && state.id == participantID) {
+                console.log("TRACK_UPDATED", participantID, muted, action);
                 return set(state, 'videoMuted', muted);
             }
 
@@ -262,6 +269,7 @@ function _participantJoined({ participant }) {
         name,
         pinned: pinned || false,
         presence,
-        role: role || PARTICIPANT_ROLE.NONE
+        role: role || PARTICIPANT_ROLE.NONE,
+        videoMuted: true,
     };
 }

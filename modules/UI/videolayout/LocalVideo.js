@@ -170,8 +170,10 @@ export default class LocalVideo extends SmallVideo {
         // want our action to take effect. Toggling the display property through
         // the above css class didn't succeed in overwriting the style.
         if (visible) {
+            this.$container.addClass('hidden');
             this.$container.show();
         } else {
+            this.$container.removeClass('hidden');
             this.$container.hide();
         }
     }

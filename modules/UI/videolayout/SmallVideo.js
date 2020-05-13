@@ -497,10 +497,10 @@ export default class SmallVideo {
      * Updates the css classes of the thumbnail based on the current state.
      */
     updateView() {
-        if (this.isVideoMuted) {
-            this.$container.hide();
-        } else {
+        if (this.isVideoPlayable()) {
             this.$container.show();
+        } else {
+            this.$container.hide();
         }
 
         this.$container.removeClass((index, classNames) =>

@@ -39,7 +39,7 @@ import { LOCAL_PARTICIPANT_DEFAULT_ID, PARTICIPANT_ROLE } from './constants';
  * @property {string} avatar - Path to participant avatar if any.
  * @property {string} role - Participant role.
  * @property {boolean} local - If true, participant is local.
- * @property {boolean} videoMuted - If true, the video is muted.
+ * @property {boolean} withVideo - If true, the video is muted.
  * @property {boolean} pinned - If true, participant is currently a
  * "PINNED_ENDPOINT".
  * @property {boolean} dominantSpeaker - If this participant is the dominant
@@ -94,7 +94,8 @@ ReducerRegistry.register('features/base/participants', (state = [], action) => {
         return state.map(p => _participant(p, action));
 
     case PARTICIPANT_JOINED:
-        return [ ...state, _participantJoined(action) ];
+        let joined = _participantJoined(action);
+        return [ ...state,  joined];
 
     case PARTICIPANT_LEFT: {
         // XXX A remote participant is uniquely identified by their id in a
@@ -176,6 +177,7 @@ function _participant(state: Object = {}, action) {
                 }
             }
 
+            console.log('participant updated', state.name, newState);
             return newState;
         }
         break;
@@ -192,19 +194,23 @@ function _participant(state: Object = {}, action) {
         // in track mute changes are moved into React and/or redux.
         if (typeof APP !== 'undefined') {
             const { jitsiTrack } = action.track;
-            const muted = jitsiTrack.isMuted();
             const participantID = jitsiTrack.getParticipantId();
             const isVideoTrack = jitsiTrack.type !== MEDIA_TYPE.AUDIO;
 
             if (isVideoTrack && state.id == participantID) {
-                console.log("TRACK_UPDATED", participantID, muted, action);
-                return set(state, 'videoMuted', muted);
+                // We do not show
+                // A) muted video tracks or
+                // B) video tracks without video
+                const muted = jitsiTrack.isMuted();
+                const noRealTrack = action.type == TRACK_ADDED && jitsiTrack.videoType === undefined;
+                const trackRemoved = action.type == TRACK_REMOVED;
+                // console.log("XXX", action.type, state.name, "muted", muted, "noRealTrack", noRealTrack, "trackRemoved", trackRemoved, action);
+                return set(state, 'withVideo', !(muted || noRealTrack || trackRemoved));
             }
 
         }
 
         return state;
-
     }
 
     return state;
@@ -270,6 +276,6 @@ function _participantJoined({ participant }) {
         pinned: pinned || false,
         presence,
         role: role || PARTICIPANT_ROLE.NONE,
-        videoMuted: true,
+        withVideo: false,
     };
 }

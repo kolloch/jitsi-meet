@@ -285,14 +285,14 @@ const VideoLayout = {
             return aId < bId ? -1 : aId == bId ? 0 : 1;
         });
 
-        console.log('XXXXXXXXXXXx  reorderThumbnails', $('#filmstripRemoteVideos'));
+        // console.log('XXXXXXXXXXXx  reorderThumbnails', $('#filmstripRemoteVideos'));
         for (let i=0; i<containers.length; ++i) {
             const container = $(containers[i]);
             if (container.parent().attr('id') == 'localVideoTileViewContainer') {
                 container.parent().css('order', i);
             }
             container.css('order', i);
-            console.log('XXXXX order', i, container);
+            // console.log('XXXXX order', i, container);
         }
     },
 

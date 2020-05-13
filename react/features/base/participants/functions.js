@@ -127,7 +127,7 @@ export function getParticipantById(
  */
 export function getParticipantCount(stateful: Object | Function) {
     // FIXME: This is probably not always right
-    return getParticipantsWithVisibleVideo(stateful).length;
+    return getParticipants(stateful).length;
 }
 
 /**
@@ -214,13 +214,15 @@ export function getParticipants(stateful: Object | Function) {
 }
 
 export function getParticipantsWithVisibleVideo(stateful: Object | Function) {
-    let counted = getParticipants(stateful).filter(p => !p.videoMuted);
+    let counted = getParticipants(stateful).filter(p => p.withVideo);
     // console.log('getParticipantsWithVisibleVideo', counted);
     return counted;
 }
 
 export function getParticipantsCountWithVisibleVideo(stateful: Object | Function) {
-    return getParticipantsWithVisibleVideo(stateful).length;
+    let count = getParticipantsWithVisibleVideo(stateful).length;
+    // Avoid division by 0 in layout code.
+    return count == 0? 1: count;
 }
 
 /**

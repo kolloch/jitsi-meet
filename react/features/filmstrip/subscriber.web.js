@@ -17,6 +17,7 @@ StateListenerRegistry.register(
         const state = store.getState();
 
         if (shouldDisplayTileView(state)) {
+            console.log('participantsCountWithVisibleVideo', numberOfParticipants);
             const gridDimensions = getTileViewGridDimensions(state);
             const oldGridDimensions = state['features/filmstrip'].tileViewDimensions.gridDimensions;
             const { clientHeight, clientWidth } = state['features/base/responsive-ui'];

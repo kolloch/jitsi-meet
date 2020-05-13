@@ -6,7 +6,7 @@
   dev = {
 
     inherit (pkgs)
-      nodejs-12_x
+      nodejs-13_x
       nixpkgs-fmt
       nix
       git

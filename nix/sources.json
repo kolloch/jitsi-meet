@@ -1,16 +1,4 @@
 {
-    "napalm": {
-        "branch": "master",
-        "description": "Support for building npm packages in Nix and lightweight npm registry",
-        "homepage": "",
-        "owner": "nmattia",
-        "repo": "napalm",
-        "rev": "47e8d246cba57a346db15f6a33ba61c54d3b5c05",
-        "sha256": "1dxj8jqi0292s1xalis0mr1p3ck3zxqxx0xwlvx856kcnp317x8b",
-        "type": "tarball",
-        "url": "https://github.com/nmattia/napalm/archive/47e8d246cba57a346db15f6a33ba61c54d3b5c05.tar.gz",
-        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
-    },
     "niv": {
         "branch": "master",
         "description": "Easy dependency management for Nix projects",
@@ -24,15 +12,15 @@
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "nixpkgs": {
-        "branch": "nixos-19.09",
+        "branch": "nixos-20.03",
         "description": "A read-only mirror of NixOS/nixpkgs tracking the released channels. Send issues and PRs to",
         "homepage": "https://github.com/NixOS/nixpkgs",
         "owner": "NixOS",
         "repo": "nixpkgs-channels",
-        "rev": "c4799f080ba4479548f898a5eed66628c0e9200a",
-        "sha256": "1cpl9mv81q5jqkfbadpv9qpyhcsjd75waym9zd6r0nlv69107xxv",
+        "rev": "5adf2a6c11646898742b0c08f7e94101620ba707",
+        "sha256": "0wf7pwma2qyfak39b242mcq8z7cdj65sds7hcjxchy0448shapzi",
         "type": "tarball",
-        "url": "https://github.com/NixOS/nixpkgs-channels/archive/c4799f080ba4479548f898a5eed66628c0e9200a.tar.gz",
+        "url": "https://github.com/NixOS/nixpkgs-channels/archive/5adf2a6c11646898742b0c08f7e94101620ba707.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     }
 }

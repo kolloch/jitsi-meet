@@ -120,6 +120,8 @@ export default class RemoteVideo extends SmallVideo {
         this.container.onclick = this._onContainerClick;
 
         this.container.setAttribute('data-participant-id', user.getId());
+        // Flip everyone by default. Works better for pointing towards each other!
+        this.selectVideoElement().addClass('flipVideoX');
     }
 
     /**

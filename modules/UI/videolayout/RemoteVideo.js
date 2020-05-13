@@ -120,6 +120,7 @@ export default class RemoteVideo extends SmallVideo {
         this.container.onclick = this._onContainerClick;
 
         this.container.setAttribute('data-participant-id', user.getId());
+
         // Flip everyone by default. Works better for pointing towards each other!
         this.selectVideoElement().addClass('flipVideoX');
     }
@@ -418,6 +419,8 @@ export default class RemoteVideo extends SmallVideo {
     updateView() {
         this.$container.toggleClass('audio-only', APP.conference.isAudioOnly());
         this.updateConnectionStatusIndicator();
+        // Flip everyone by default. Works better for pointing towards each other!
+        this.selectVideoElement().addClass('flipVideoX');
 
         // This must be called after 'updateConnectionStatusIndicator' because it
         // affects the display mode by modifying 'mutedWhileDisconnected' flag

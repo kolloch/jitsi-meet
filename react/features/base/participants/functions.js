@@ -214,7 +214,8 @@ export function getParticipants(stateful: Object | Function) {
 }
 
 export function getParticipantsWithVisibleVideo(stateful: Object | Function) {
-    return getParticipants(stateful).filter(p => !p.videoMuted);
+    let counted = getParticipants(stateful).filter(p => p.videoMuted === undefined && !p.videoMuted);
+    return counted;
 }
 
 export function getParticipantsCountWithVisibleVideo(stateful: Object | Function) {
